@@ -20,6 +20,17 @@ export default class ActivityStore {
             Date.parse(a.date) -  Date.parse(b.date));
     }
 
+    //last line is the object we give as a first value to our object that makes the erros go away
+    get groupedActivities() {
+        return Object.entries(
+            this.activitiesByDate.reduce((activities, activity) => {
+                const date = activity.date;
+                activities[date] = activities[date] ? [...activities[date], activity] : [activity];
+                return activities;
+            }, {} as {[key: string]: Activity[]})
+        )
+    }
+
     loadActivities = async () => {
         this.setLoadingInitial(true); 
         try{
