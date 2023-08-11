@@ -47,13 +47,25 @@ export default observer( function ActivityForm() {
         if (id) loadActivity(id).then(activity => setActivity(activity!))
     }, [id, loadActivity]);
     
+    // function handleFormSubmit(activity: Activity) {
+    //     if (!activity.id) {
+    //         activity.id = uuid();
+    //         createActivity(activity).then(() => navigate(`/activities/${activity}`));
+    //     } else {
+    //         updateActivity(activity).then(() => navigate(`/activities/${activity}`));
+    //     } 
+    // }
+
     function handleFormSubmit(activity: Activity) {
-        if (!activity.id) {
-            activity.id = uuid();
-            createActivity(activity).then(() => navigate(`/activities/${activity}`));
+        if (activity.id.length === 0) {
+            let newActivity = {
+                ...activity,
+                id: uuid()
+            };
+            createActivity(newActivity).then(() => navigate(`/activities/${newActivity.id}`))
         } else {
-            updateActivity(activity).then(() => navigate(`/activities/${activity}`));
-        } 
+            updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
+        }
     }
 
     // function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
